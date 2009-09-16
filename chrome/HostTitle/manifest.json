@@ -1,0 +1,12 @@
+{
+	"name": "HostTitle",
+	"version": "1.0",
+	"description": "An extension that appends the hostname of the site to the title bar.",
+	"permissions": [],
+	"content_scripts": [
+		{
+			"matches"	: [ "http://*/*", "https://*/*" ],
+			"js"		: [ "custom.js" ]
+		}
+	]
+}
