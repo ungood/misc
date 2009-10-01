@@ -1,0 +1,55 @@
+<html>
+<head>
+<script>
+	var customTitle = "%t % [%d]";
+	console.log('Loaded');
+
+	function parseDomain(url) {
+		var http = /^https?:\/\//.exec(url);
+		if(http == null)
+			return null;
+		
+		var domainIndex = url.indexOf('/', http[0].length);
+		if(domainIndex < 0)
+			return null;
+		
+		return url.slice(http[0].length, domainIndex);
+	}
+	
+	function updateTitle(tab) {
+		if(tab.title && tab.url) {
+			var domain = parseDomain(tab.url);
+			if(domain == null)
+				return;
+			
+			var title = titleReplace(customTitle, [
+				[ /%d/, domain		],
+				[ /%t/, tab.title	],
+				[ /%%/, '%'			]
+			]);
+			
+			console.log(title);
+			
+			try {
+				var port = chrome.tabs.connect(tab.id, {name: 'changeTitle'});
+				port.postMessage({ title: title });
+			}
+			catch {}
+		}
+	}
+	
+	function titleReplace(str, tokens) {
+		for(var i in tokens){
+			str = str.replace(tokens[i][0], tokens[i][1]);
+		}
+		
+		return str;
+	}
+
+	chrome.tabs.onUpdated.addListener(function(tabId, info) {
+		if(info.status == 'complete')
+			chrome.tabs.get(tabId, updateTitle);
+	});
+</script>
+</head>
+</html>

@@ -1,0 +1,15 @@
+{
+	"name": "CustomTitle",
+	"version": "0.1",
+	"description": "An extension that lets you customize Chrome's title bar.",
+	"permissions": [
+		"tabs"
+	],
+	"background_page": "background.html",
+	"content_scripts" : [
+		{
+			"matches"	: [ "http://*/*", "https://*/*" ],
+			"js"		: [ "content.js" ]
+		}
+	]
+}
