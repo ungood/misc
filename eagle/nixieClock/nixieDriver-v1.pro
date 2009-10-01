@@ -2,24 +2,24 @@ EAGLE AutoRouter Statistics:
 
 Job           : C:/projects/personal/svn/eagle/nixieClock/nixieDriver-v1.brd
 
-Start at      : 14:48:19 (9/22/2009)
-End at        : 14:48:38 (9/22/2009)
-Elapsed time  : 00:00:19
+Start at      : 11:24:15 (9/28/2009)
+End at        : 11:28:01 (9/28/2009)
+Elapsed time  : 00:03:46
 
-Signals       :    38   RoutingGrid: 25 mil  Layers: 1
-Connections   :    52   predefined:  0 ( 0 Vias )
+Signals       :    39   RoutingGrid: 12.5 mil  Layers: 1
+Connections   :   104   predefined:  29 ( 2 Vias )
 
-Router memory :   19392
+Router memory :   92590
 
-Passname          :     Route Optimize1 Optimize2 Optimize3 Optimize4
+Passname          :     Route
 
-Time per pass     :  00:00:18  00:00:00  00:00:00  00:00:01  00:00:00
-Number of Ripups  :       596         0         0         0         0
-max. Level        :         7         0         0         0         0
-max. Total        :        15         0         0         0         0
+Time per pass     :  00:03:46
+Number of Ripups  :       585
+max. Level        :         5
+max. Total        :        10
 
-Routed            :        47        47        47        47        47
-Vias              :         0         0         0         0         0
-Resolution        :    90.4 %    90.4 %    90.4 %    90.4 %    90.4 %
+Routed            :        11
+Vias              :         0
+Resolution        :    38.5 %
 
-Final             : 90.4% finished
+Final             : 76.9% finished
