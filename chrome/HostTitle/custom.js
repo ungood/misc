@@ -10,4 +10,4 @@ function changeTitle() {
  	document.title= document.title + ' [' + document.URL.slice(protoIndex + 3, domainIndex) + ']';
 }
 
-setTimeout(changeTitle, 100);
+changeTitle();

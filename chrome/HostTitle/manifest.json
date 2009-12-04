@@ -1,13 +1,20 @@
 {
 	"name": "HostTitle",
-	"version": "1.0",
+	"version": "1.1",
 	"description": "An extension that appends the hostname of the site to the title bar.",
+	"icons": {
+		"16": "metroid_16.png",
+		"32": "metroid_32.png",
+		"48": "metroid_48.png",
+		"128": "metroid_128.png"
+	},
+	
 	"permissions": [],
-	"update_url": "http://static.plusplusungood.com/chrome/autoupdate.xml",
 	"content_scripts": [
 		{
 			"matches"	: [ "http://*/*", "https://*/*" ],
-			"js"		: [ "custom.js" ]
+			"js"		: [ "custom.js" ],
+			"run_at"	: "document_idle"
 		}
 	]
 }
