@@ -1,0 +1,56 @@
+const int SECONDS_PER_DAY    = 24 * 60 * 60;
+const int GEEK_UNITS_PER_DAY = 2 ^ 16;
+const float SECONDS_PER_GEEK_UNITS = (float)SECONDS_PER_DAY / (float)GEEK_UNITS_PER_DAY;
+
+int SecondsToGeekTime(int seconds) {
+	return seconds / SECONDS_PER_GEEK_UNITS;
+}
+
+Red/Green = Date, Quaternary
+15 14 13 12
+11 10  9  8
+ 7  6  5  4
+ 3  2  1  0
+
+Quaternary to Binary to Colors, Mod Bit = 0
+0 = 00 = Red Off, Green Off
+1 = 01 = Red Off, Green On
+2 = 10 = Red On, Green Off
+3 = 11 = Red On, Green On
+
+Quaternary to Binary to Colors, Mod Bit = 1
+0 = 00 = Red On, Green On
+1 = 01 = Red On, Green Off
+2 = 10 = Red Off, Green On
+3 = 11 = Red Off, Green Off
+
+Blue = Geek Time, Binary
+15 14 13 12
+11 10  9  8
+ 7  6  5  4
+ 3  2  1  0 
+
+Mayan Tzolk'in
+Seq Num : 13, 4 bits
+Day Name: 20, 5 bits
+
+Mayan Haab'
+"Months": 19, 5 bits
+"Days"  : 20, 5 bits
+
+Mayan Long Count
+K'atun: 20, 5 bits
+Tun   : 20, 5 bits
+Winal : 18, 5 bits
+K'in  : 20, 5 bits
+
+
+
+      0 1 2 3 4 5 6 7
+C0 = | Tzolk'in |
+
+
+K'atun
+Tun
+Winal
+K'in
