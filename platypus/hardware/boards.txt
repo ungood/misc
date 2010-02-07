@@ -60,6 +60,26 @@ mega.build.core=arduino
 
 ##############################################################
 
+platypus.name=Platypus
+
+platypus.upload.protocol=stk500
+platypus.upload.maximum_size=126976
+platypus.upload.speed=57600
+
+platypus.bootloader.low_fuses=0xFF
+platypus.bootloader.high_fuses=0xDA
+platypus.bootloader.extended_fuses=0xF5
+platypus.bootloader.path=atmega
+platypus.bootloader.file=ATmegaBOOT_168_atmega1280.hex
+platypus.bootloader.unlock_bits=0x3F
+platypus.bootloader.lock_bits=0x0F
+
+platypus.build.mcu=atmega1281
+platypus.build.f_cpu=16000000L
+platypus.build.core=arduino
+
+##############################################################
+
 mini.name=Arduino Mini
 
 mini.upload.protocol=stk500

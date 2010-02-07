@@ -20,7 +20,7 @@
 PROGRAM    = ATmegaBOOT_168
 
 # enter the parameters for the avrdude isp tool
-ISPTOOL	   = stk500v2
+ISPTOOL	   = usbtiny
 ISPPORT	   = usb
 ISPSPEED   = -b 115200
 
@@ -195,6 +195,21 @@ mega_isp: HFUSE = DA
 mega_isp: LFUSE = FF
 mega_isp: EFUSE = F5
 mega_isp: isp
+
+platypus: TARGET = platypus
+platypus: MCU_TARGET = atmega1281
+platypus: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=0' -DBAUD_RATE=57600
+platypus: AVR_FREQ = 16000000L 
+platypus: LDSECTION  = --section-start=.text=0x1F000
+platypus: $(PROGRAM)_platypus.hex
+
+platypus: mega
+platypus: TARGET = platypus
+platypus: MCU_TARGET = atmega1281
+platypus: HFUSE = DA
+platypus: LFUSE = FF
+platypus: EFUSE = F5
+platypus: isp
 
 isp: $(TARGET)
 	$(ISPFUSES)

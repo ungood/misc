@@ -7,6 +7,7 @@
 /* ATmegaBOOT.c                                           */
 /*                                                        */
 /*                                                        */
+/* 20100130: added support for ATmega1281                 */
 /* 20090308: integrated Mega changes into main bootloader */
 /*           source by D. Mellis                          */
 /* 20080930: hacked for Arduino Mega (with the 1280       */
@@ -115,7 +116,7 @@
 #define BL_PIN  PINF
 #define BL0     PINF7
 #define BL1     PINF6
-#elif defined __AVR_ATmega1280__ 
+#elif defined __AVR_ATmega1280__ || defined __AVR_ATmega1281
 /* we just don't do anything for the MEGA and enter bootloader on reset anyway*/
 #else
 /* other ATmegas have only one UART, so only one pin is defined to enter bootloader */
@@ -128,7 +129,7 @@
 
 /* onboard LED is used to indicate, that the bootloader was entered (3x flashing) */
 /* if monitor functions are included, LED goes on after monitor was entered */
-#if defined __AVR_ATmega128__ || defined __AVR_ATmega1280__
+#if defined __AVR_ATmega128__ || defined __AVR_ATmega1280__ || defined __AVR_ATmega1281
 /* Onboard LED is connected to pin PB7 (e.g. Crumb128, PROBOmega128, Savvy128, Arduino Mega) */
 #define LED_DDR  DDRB
 #define LED_PORT PORTB
@@ -145,8 +146,7 @@
 
 
 /* monitor functions will only be compiled when using ATmega128, due to bootblock size constraints */
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
-#define MONITOR 1
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 #endif
 
 
@@ -158,6 +158,11 @@
 #define SIG2	0x97
 #define SIG3	0x03
 #define PAGE_SIZE	0x80U	//128 words
+
+#elif defined(__AVR_ATmega1281__)
+#define SIG2	0x97
+#define SIG3	0x04
+#define PAGE_SIZE	0x80U
 
 #elif defined __AVR_ATmega1281__
 #define SIG2	0x97
@@ -317,7 +322,7 @@ int main(void)
 	}
 #endif
 
-#if defined __AVR_ATmega1280__
+#if defined __AVR_ATmega1280__ || defined(__AVR_ATmega1281__)
 	/* the mega1280 chip has four serial ports ... we could eventually use any of them, or not? */
 	/* however, we don't wanna confuse people, to avoid making a mess, we will stick to RXD0, TXD0 */
 	bootuart = 1;
@@ -349,7 +354,7 @@ int main(void)
 
 
 	/* initialize UART(s) depending on CPU defined */
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 	if(bootuart == 1) {
 		UBRR0L = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
 		UBRR0H = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
@@ -403,7 +408,7 @@ int main(void)
 	UCSRB = _BV(TXEN)|_BV(RXEN);
 #endif
 
-#if defined __AVR_ATmega1280__
+#if defined __AVR_ATmega1280__ || defined(__AVR_ATmega1281__)
 	/* Enable internal pull-up resistor on pin D0 (RX), in order
 	to supress line noise that prevents the bootloader from
 	timing out (DAM: 20070509) */
@@ -418,7 +423,7 @@ int main(void)
 
 
 	/* flash onboard LED to signal entering of bootloader */
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 	// 4x for UART0, 5x for UART1
 	flash_led(NUM_LED_FLASHES + bootuart);
 #else
@@ -701,7 +706,7 @@ int main(void)
 	else if(ch=='t') {
 		length.byte[1] = getch();
 		length.byte[0] = getch();
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 		if (address.word>0x7FFF) flags.rampz = 1;		// No go with m256, FIXME
 		else flags.rampz = 0;
 #endif
@@ -725,7 +730,7 @@ int main(void)
 				else {
 
 					if (!flags.rampz) putch(pgm_read_byte_near(address.word));
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 					else putch(pgm_read_byte_far(address.word + 0x10000));
 					// Hmmmm, yuck  FIXME when m256 arrvies
 #endif
@@ -769,7 +774,7 @@ int main(void)
 		ch = getch();
 		if(ch=='!') {
 			PGM_P welcome = "";
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 			uint16_t extaddr;
 #endif
 			uint8_t addrl, addrh;
@@ -782,6 +787,8 @@ int main(void)
 			welcome = "ATmegaBOOT / Savvy128 - (C) J.P.Kyle, E.Lins - 050815\n\r";
 #elif defined __AVR_ATmega1280__ 
 			welcome = "ATmegaBOOT / Arduino Mega - (C) Arduino LLC - 090930\n\r";
+#elif defined __AVR_ATmega1281__
+			welcome = "ATmegaBOOT / Arduino 1281\n\r";
 #endif
 
 			/* turn on LED */
@@ -840,7 +847,7 @@ int main(void)
 						putch(getch());
 					}
 				}
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 				/* external bus loop  */
 				else if(ch == 'b') {
 					putch('b');
@@ -919,7 +926,7 @@ void puthex(char ch) {
 
 void putch(char ch)
 {
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 	if(bootuart == 1) {
 		while (!(UCSR0A & _BV(UDRE0)));
 		UDR0 = ch;
@@ -941,7 +948,7 @@ void putch(char ch)
 
 char getch(void)
 {
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 	uint32_t count = 0;
 	if(bootuart == 1) {
 		while(!(UCSR0A & _BV(RXC0))) {
@@ -994,7 +1001,7 @@ char getch(void)
 void getNch(uint8_t count)
 {
 	while(count--) {
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
 		if(bootuart == 1) {
 			while(!(UCSR0A & _BV(RXC0)));
 			UDR0;

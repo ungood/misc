@@ -165,13 +165,6 @@ void HardwareSerial::begin(long baud)
   sbi(*_ucsrb, _rxcie);
 }
 
-void HardwareSerial::end()
-{
-  cbi(*_ucsrb, _rxen);
-  cbi(*_ucsrb, _txen);
-  cbi(*_ucsrb, _rxcie);  
-}
-
 uint8_t HardwareSerial::available(void)
 {
   return (RX_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % RX_BUFFER_SIZE;

@@ -19,7 +19,7 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: pins_arduino.c 804 2009-12-18 16:05:52Z dmellis $
+  $Id: pins_arduino.c 565 2009-03-25 10:50:00Z dmellis $
 */
 
 #include <avr/io.h>
@@ -132,228 +132,444 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 };
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
+	// PORTLIST
+	// -------------------------------------------
+	PE	, // PE 0 ** 0 ** USART0_RX
+	PE	, // PE 1 ** 1 ** USART0_TX
+	PE	, // PE 4 ** 2 ** PWM2
+	PE	, // PE 5 ** 3 ** PWM3
+	PG	, // PG 5 ** 4 ** PWM4
+	PE	, // PE 3 ** 5 ** PWM5
+	PH	, // PH 3 ** 6 ** PWM6
+	PH	, // PH 4 ** 7 ** PWM7
+	PH	, // PH 5 ** 8 ** PWM8
+	PH	, // PH 6 ** 9 ** PWM9
+	PB	, // PB 4 ** 10 ** PWM10
+	PB	, // PB 5 ** 11 ** PWM11
+	PB	, // PB 6 ** 12 ** PWM12
+	PB	, // PB 7 ** 13 ** PWM13
+	PJ	, // PJ 1 ** 14 ** USART3_TX
+	PJ	, // PJ 0 ** 15 ** USART3_RX
+	PH	, // PH 1 ** 16 ** USART2_TX
+	PH	, // PH 0 ** 17 ** USART2_RX
+	PD	, // PD 3 ** 18 ** USART1_TX
+	PD	, // PD 2 ** 19 ** USART1_RX
+	PD	, // PD 1 ** 20 ** I2C_SDA
+	PD	, // PD 0 ** 21 ** I2C_SCL
+	PA	, // PA 0 ** 22 ** D22
+	PA	, // PA 1 ** 23 ** D23
+	PA	, // PA 2 ** 24 ** D24
+	PA	, // PA 3 ** 25 ** D25
+	PA	, // PA 4 ** 26 ** D26
+	PA	, // PA 5 ** 27 ** D27
+	PA	, // PA 6 ** 28 ** D28
+	PA	, // PA 7 ** 29 ** D29
+	PC	, // PC 7 ** 30 ** D30
+	PC	, // PC 6 ** 31 ** D31
+	PC	, // PC 5 ** 32 ** D32
+	PC	, // PC 4 ** 33 ** D33
+	PC	, // PC 3 ** 34 ** D34
+	PC	, // PC 2 ** 35 ** D35
+	PC	, // PC 1 ** 36 ** D36
+	PC	, // PC 0 ** 37 ** D37
+	PD	, // PD 7 ** 38 ** D38
+	PG	, // PG 2 ** 39 ** D39
+	PG	, // PG 1 ** 40 ** D40
+	PG	, // PG 0 ** 41 ** D41
+	PL	, // PL 7 ** 42 ** D42
+	PL	, // PL 6 ** 43 ** D43
+	PL	, // PL 5 ** 44 ** D44
+	PL	, // PL 4 ** 45 ** D45
+	PL	, // PL 3 ** 46 ** D46
+	PL	, // PL 2 ** 47 ** D47
+	PL	, // PL 1 ** 48 ** D48
+	PL	, // PL 0 ** 49 ** D49
+	PB	, // PB 3 ** 50 ** SPI_MISO
+	PB	, // PB 2 ** 51 ** SPI_MOSI
+	PB	, // PB 1 ** 52 ** SPI_SCK
+	PB	, // PB 0 ** 53 ** SPI_SS
+	PF	, // PF 0 ** 54 ** A0
+	PF	, // PF 1 ** 55 ** A1
+	PF	, // PF 2 ** 56 ** A2
+	PF	, // PF 3 ** 57 ** A3
+	PF	, // PF 4 ** 58 ** A4
+	PF	, // PF 5 ** 59 ** A5
+	PF	, // PF 6 ** 60 ** A6
+	PF	, // PF 7 ** 61 ** A7
+	PK	, // PK 0 ** 62 ** A8
+	PK	, // PK 1 ** 63 ** A9
+	PK	, // PK 2 ** 64 ** A10
+	PK	, // PK 3 ** 65 ** A11
+	PK	, // PK 4 ** 66 ** A12
+	PK	, // PK 5 ** 67 ** A13
+	PK	, // PK 6 ** 68 ** A14
+	PK	, // PK 7 ** 69 ** A15
+};
+
+const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
+	// PIN IN PORT
+	// -------------------------------------------
+	_BV( 0 )	, // PE 0 ** 0 ** USART0_RX
+	_BV( 1 )	, // PE 1 ** 1 ** USART0_TX
+	_BV( 4 )	, // PE 4 ** 2 ** PWM2
+	_BV( 5 )	, // PE 5 ** 3 ** PWM3
+	_BV( 5 )	, // PG 5 ** 4 ** PWM4
+	_BV( 3 )	, // PE 3 ** 5 ** PWM5
+	_BV( 3 )	, // PH 3 ** 6 ** PWM6
+	_BV( 4 )	, // PH 4 ** 7 ** PWM7
+	_BV( 5 )	, // PH 5 ** 8 ** PWM8
+	_BV( 6 )	, // PH 6 ** 9 ** PWM9
+	_BV( 4 )	, // PB 4 ** 10 ** PWM10
+	_BV( 5 )	, // PB 5 ** 11 ** PWM11
+	_BV( 6 )	, // PB 6 ** 12 ** PWM12
+	_BV( 7 )	, // PB 7 ** 13 ** PWM13
+	_BV( 1 )	, // PJ 1 ** 14 ** USART3_TX
+	_BV( 0 )	, // PJ 0 ** 15 ** USART3_RX
+	_BV( 1 )	, // PH 1 ** 16 ** USART2_TX
+	_BV( 0 )	, // PH 0 ** 17 ** USART2_RX
+	_BV( 3 )	, // PD 3 ** 18 ** USART1_TX
+	_BV( 2 )	, // PD 2 ** 19 ** USART1_RX
+	_BV( 1 )	, // PD 1 ** 20 ** I2C_SDA
+	_BV( 0 )	, // PD 0 ** 21 ** I2C_SCL
+	_BV( 0 )	, // PA 0 ** 22 ** D22
+	_BV( 1 )	, // PA 1 ** 23 ** D23
+	_BV( 2 )	, // PA 2 ** 24 ** D24
+	_BV( 3 )	, // PA 3 ** 25 ** D25
+	_BV( 4 )	, // PA 4 ** 26 ** D26
+	_BV( 5 )	, // PA 5 ** 27 ** D27
+	_BV( 6 )	, // PA 6 ** 28 ** D28
+	_BV( 7 )	, // PA 7 ** 29 ** D29
+	_BV( 7 )	, // PC 7 ** 30 ** D30
+	_BV( 6 )	, // PC 6 ** 31 ** D31
+	_BV( 5 )	, // PC 5 ** 32 ** D32
+	_BV( 4 )	, // PC 4 ** 33 ** D33
+	_BV( 3 )	, // PC 3 ** 34 ** D34
+	_BV( 2 )	, // PC 2 ** 35 ** D35
+	_BV( 1 )	, // PC 1 ** 36 ** D36
+	_BV( 0 )	, // PC 0 ** 37 ** D37
+	_BV( 7 )	, // PD 7 ** 38 ** D38
+	_BV( 2 )	, // PG 2 ** 39 ** D39
+	_BV( 1 )	, // PG 1 ** 40 ** D40
+	_BV( 0 )	, // PG 0 ** 41 ** D41
+	_BV( 7 )	, // PL 7 ** 42 ** D42
+	_BV( 6 )	, // PL 6 ** 43 ** D43
+	_BV( 5 )	, // PL 5 ** 44 ** D44
+	_BV( 4 )	, // PL 4 ** 45 ** D45
+	_BV( 3 )	, // PL 3 ** 46 ** D46
+	_BV( 2 )	, // PL 2 ** 47 ** D47
+	_BV( 1 )	, // PL 1 ** 48 ** D48
+	_BV( 0 )	, // PL 0 ** 49 ** D49
+	_BV( 3 )	, // PB 3 ** 50 ** SPI_MISO
+	_BV( 2 )	, // PB 2 ** 51 ** SPI_MOSI
+	_BV( 1 )	, // PB 1 ** 52 ** SPI_SCK
+	_BV( 0 )	, // PB 0 ** 53 ** SPI_SS
+	_BV( 0 )	, // PF 0 ** 54 ** A0
+	_BV( 1 )	, // PF 1 ** 55 ** A1
+	_BV( 2 )	, // PF 2 ** 56 ** A2
+	_BV( 3 )	, // PF 3 ** 57 ** A3
+	_BV( 4 )	, // PF 4 ** 58 ** A4
+	_BV( 5 )	, // PF 5 ** 59 ** A5
+	_BV( 6 )	, // PF 6 ** 60 ** A6
+	_BV( 7 )	, // PF 7 ** 61 ** A7
+	_BV( 0 )	, // PK 0 ** 62 ** A8
+	_BV( 1 )	, // PK 1 ** 63 ** A9
+	_BV( 2 )	, // PK 2 ** 64 ** A10
+	_BV( 3 )	, // PK 3 ** 65 ** A11
+	_BV( 4 )	, // PK 4 ** 66 ** A12
+	_BV( 5 )	, // PK 5 ** 67 ** A13
+	_BV( 6 )	, // PK 6 ** 68 ** A14
+	_BV( 7 )	, // PK 7 ** 69 ** A15
+};
+
+const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
+	// TIMERS
+	// -------------------------------------------
+	NOT_ON_TIMER	, // PE 0 ** 0 ** USART0_RX
+	NOT_ON_TIMER	, // PE 1 ** 1 ** USART0_TX
+	TIMER3B	, // PE 4 ** 2 ** PWM2
+	TIMER3C	, // PE 5 ** 3 ** PWM3
+	TIMER0B	, // PG 5 ** 4 ** PWM4
+	TIMER3A	, // PE 3 ** 5 ** PWM5
+	TIMER4A	, // PH 3 ** 6 ** PWM6
+	TIMER4B	, // PH 4 ** 7 ** PWM7
+	TIMER4C	, // PH 5 ** 8 ** PWM8
+	TIMER2B	, // PH 6 ** 9 ** PWM9
+	TIMER2A	, // PB 4 ** 10 ** PWM10
+	TIMER1A	, // PB 5 ** 11 ** PWM11
+	TIMER1B	, // PB 6 ** 12 ** PWM12
+	TIMER0A	, // PB 7 ** 13 ** PWM13
+	NOT_ON_TIMER	, // PJ 1 ** 14 ** USART3_TX
+	NOT_ON_TIMER	, // PJ 0 ** 15 ** USART3_RX
+	NOT_ON_TIMER	, // PH 1 ** 16 ** USART2_TX
+	NOT_ON_TIMER	, // PH 0 ** 17 ** USART2_RX
+	NOT_ON_TIMER	, // PD 3 ** 18 ** USART1_TX
+	NOT_ON_TIMER	, // PD 2 ** 19 ** USART1_RX
+	NOT_ON_TIMER	, // PD 1 ** 20 ** I2C_SDA
+	NOT_ON_TIMER	, // PD 0 ** 21 ** I2C_SCL
+	NOT_ON_TIMER	, // PA 0 ** 22 ** D22
+	NOT_ON_TIMER	, // PA 1 ** 23 ** D23
+	NOT_ON_TIMER	, // PA 2 ** 24 ** D24
+	NOT_ON_TIMER	, // PA 3 ** 25 ** D25
+	NOT_ON_TIMER	, // PA 4 ** 26 ** D26
+	NOT_ON_TIMER	, // PA 5 ** 27 ** D27
+	NOT_ON_TIMER	, // PA 6 ** 28 ** D28
+	NOT_ON_TIMER	, // PA 7 ** 29 ** D29
+	NOT_ON_TIMER	, // PC 7 ** 30 ** D30
+	NOT_ON_TIMER	, // PC 6 ** 31 ** D31
+	NOT_ON_TIMER	, // PC 5 ** 32 ** D32
+	NOT_ON_TIMER	, // PC 4 ** 33 ** D33
+	NOT_ON_TIMER	, // PC 3 ** 34 ** D34
+	NOT_ON_TIMER	, // PC 2 ** 35 ** D35
+	NOT_ON_TIMER	, // PC 1 ** 36 ** D36
+	NOT_ON_TIMER	, // PC 0 ** 37 ** D37
+	NOT_ON_TIMER	, // PD 7 ** 38 ** D38
+	NOT_ON_TIMER	, // PG 2 ** 39 ** D39
+	NOT_ON_TIMER	, // PG 1 ** 40 ** D40
+	NOT_ON_TIMER	, // PG 0 ** 41 ** D41
+	NOT_ON_TIMER	, // PL 7 ** 42 ** D42
+	NOT_ON_TIMER	, // PL 6 ** 43 ** D43
+	TIMER5C	, // PL 5 ** 44 ** D44
+	TIMER5B	, // PL 4 ** 45 ** D45
+	TIMER5A	, // PL 3 ** 46 ** D46
+	NOT_ON_TIMER	, // PL 2 ** 47 ** D47
+	NOT_ON_TIMER	, // PL 1 ** 48 ** D48
+	NOT_ON_TIMER	, // PL 0 ** 49 ** D49
+	NOT_ON_TIMER	, // PB 3 ** 50 ** SPI_MISO
+	NOT_ON_TIMER	, // PB 2 ** 51 ** SPI_MOSI
+	NOT_ON_TIMER	, // PB 1 ** 52 ** SPI_SCK
+	NOT_ON_TIMER	, // PB 0 ** 53 ** SPI_SS
+	NOT_ON_TIMER	, // PF 0 ** 54 ** A0
+	NOT_ON_TIMER	, // PF 1 ** 55 ** A1
+	NOT_ON_TIMER	, // PF 2 ** 56 ** A2
+	NOT_ON_TIMER	, // PF 3 ** 57 ** A3
+	NOT_ON_TIMER	, // PF 4 ** 58 ** A4
+	NOT_ON_TIMER	, // PF 5 ** 59 ** A5
+	NOT_ON_TIMER	, // PF 6 ** 60 ** A6
+	NOT_ON_TIMER	, // PF 7 ** 61 ** A7
+	NOT_ON_TIMER	, // PK 0 ** 62 ** A8
+	NOT_ON_TIMER	, // PK 1 ** 63 ** A9
+	NOT_ON_TIMER	, // PK 2 ** 64 ** A10
+	NOT_ON_TIMER	, // PK 3 ** 65 ** A11
+	NOT_ON_TIMER	, // PK 4 ** 66 ** A12
+	NOT_ON_TIMER	, // PK 5 ** 67 ** A13
+	NOT_ON_TIMER	, // PK 6 ** 68 ** A14
+	NOT_ON_TIMER	, // PK 7 ** 69 ** A15
+};
+#elif defined(__AVR_ATmega1281__)
+const uint16_t PROGMEM port_to_mode_PGM[] = {
+	NOT_A_PORT,
+	&DDRA,
+	&DDRB,
+	&DDRC,
+	&DDRD,
+	&DDRE,
+	&DDRF,
+	&DDRG,
+};
+
+const uint16_t PROGMEM port_to_output_PGM[] = {
+	NOT_A_PORT,
+	&PORTA,
+	&PORTB,
+	&PORTC,
+	&PORTD,
+	&PORTE,
+	&PORTF,
+	&PORTG,
+};
+
+const uint16_t PROGMEM port_to_input_PGM[] = {
+	NOT_A_PIN,
+	&PINA,
+	&PINB,
+	&PINC,
+	&PIND,
+	&PINE,
+	&PINF,
+	&PING,
+};
+
+const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	// PORTLIST		
 	// -------------------------------------------		
-	PE	, // PE 0 ** 0 ** USART0_RX	
-	PE	, // PE 1 ** 1 ** USART0_TX	
-	PE	, // PE 4 ** 2 ** PWM2	
-	PE	, // PE 5 ** 3 ** PWM3	
-	PG	, // PG 5 ** 4 ** PWM4	
-	PE	, // PE 3 ** 5 ** PWM5	
-	PH	, // PH 3 ** 6 ** PWM6	
-	PH	, // PH 4 ** 7 ** PWM7	
-	PH	, // PH 5 ** 8 ** PWM8	
-	PH	, // PH 6 ** 9 ** PWM9	
-	PB	, // PB 4 ** 10 ** PWM10	
-	PB	, // PB 5 ** 11 ** PWM11	
-	PB	, // PB 6 ** 12 ** PWM12	
-	PB	, // PB 7 ** 13 ** PWM13	
-	PJ	, // PJ 1 ** 14 ** USART3_TX	
-	PJ	, // PJ 0 ** 15 ** USART3_RX	
-	PH	, // PH 1 ** 16 ** USART2_TX	
-	PH	, // PH 0 ** 17 ** USART2_RX	
-	PD	, // PD 3 ** 18 ** USART1_TX	
-	PD	, // PD 2 ** 19 ** USART1_RX	
-	PD	, // PD 1 ** 20 ** I2C_SDA	
-	PD	, // PD 0 ** 21 ** I2C_SCL	
-	PA	, // PA 0 ** 22 ** D22	
-	PA	, // PA 1 ** 23 ** D23	
-	PA	, // PA 2 ** 24 ** D24	
-	PA	, // PA 3 ** 25 ** D25	
-	PA	, // PA 4 ** 26 ** D26	
-	PA	, // PA 5 ** 27 ** D27	
-	PA	, // PA 6 ** 28 ** D28	
-	PA	, // PA 7 ** 29 ** D29	
-	PC	, // PC 7 ** 30 ** D30	
-	PC	, // PC 6 ** 31 ** D31	
-	PC	, // PC 5 ** 32 ** D32	
-	PC	, // PC 4 ** 33 ** D33	
-	PC	, // PC 3 ** 34 ** D34	
-	PC	, // PC 2 ** 35 ** D35	
-	PC	, // PC 1 ** 36 ** D36	
-	PC	, // PC 0 ** 37 ** D37	
-	PD	, // PD 7 ** 38 ** D38	
-	PG	, // PG 2 ** 39 ** D39	
-	PG	, // PG 1 ** 40 ** D40	
-	PG	, // PG 0 ** 41 ** D41	
-	PL	, // PL 7 ** 42 ** D42	
-	PL	, // PL 6 ** 43 ** D43	
-	PL	, // PL 5 ** 44 ** D44	
-	PL	, // PL 4 ** 45 ** D45	
-	PL	, // PL 3 ** 46 ** D46	
-	PL	, // PL 2 ** 47 ** D47	
-	PL	, // PL 1 ** 48 ** D48	
-	PL	, // PL 0 ** 49 ** D49	
-	PB	, // PB 3 ** 50 ** SPI_MISO	
-	PB	, // PB 2 ** 51 ** SPI_MOSI	
-	PB	, // PB 1 ** 52 ** SPI_SCK	
-	PB	, // PB 0 ** 53 ** SPI_SS	
-	PF	, // PF 0 ** 54 ** A0	
-	PF	, // PF 1 ** 55 ** A1	
-	PF	, // PF 2 ** 56 ** A2	
-	PF	, // PF 3 ** 57 ** A3	
-	PF	, // PF 4 ** 58 ** A4	
-	PF	, // PF 5 ** 59 ** A5	
-	PF	, // PF 6 ** 60 ** A6	
-	PF	, // PF 7 ** 61 ** A7	
-	PK	, // PK 0 ** 62 ** A8	
-	PK	, // PK 1 ** 63 ** A9	
-	PK	, // PK 2 ** 64 ** A10	
-	PK	, // PK 3 ** 65 ** A11	
-	PK	, // PK 4 ** 66 ** A12	
-	PK	, // PK 5 ** 67 ** A13	
-	PK	, // PK 6 ** 68 ** A14	
-	PK	, // PK 7 ** 69 ** A15	
+	PE	, //  0 ** PE 0 ** USART0_RX
+	PE	, //  1 ** PE 1 ** USART0_TX
+	PD	, //  2 ** PD 2 ** USART1_RX
+	PD	, //  3 ** PD 3 ** USART1_TX
+	PD	, //  4 ** PD 1 ** TWI_SDA
+	PD	, //  5 ** PD 0 ** TWI_SCL
+	PD	, //  6 ** PD 0 ** DUPLICATE - RESERVED FOR LATER USE
+	PD	, //  7 ** PD 1 ** DUPLICATE - RESERVED FOR LATER USE
+	PE	, //  8 ** PE 4 ** PWM4
+	PE	, //  9 ** PE 5 ** PWM5
+	PG	, // 10 ** PG 5 ** PWM6
+	PE	, // 11 ** PE 3 ** PWM7
+	PB	, // 12 ** PB 4 ** PWM8
+	PB	, // 13 ** PB 5 ** PWM9
+	PB	, // 14 ** PB 6 ** PWM10
+	PB	, // 15 ** PB 7 ** PWM11
+	PA	, // 16 ** PA 0 ** D16
+	PA	, // 17 ** PA 1 ** D17
+	PA	, // 18 ** PA 2 ** D18
+	PA	, // 19 ** PA 3 ** D19
+	PA	, // 20 ** PA 4 ** D20
+	PA	, // 21 ** PA 5 ** D21
+	PA	, // 22 ** PA 6 ** D22
+	PA	, // 23 ** PA 7 ** D23
+	PC	, // 24 ** PC 0 ** D24
+	PC	, // 25 ** PC 1 ** D25
+	PC	, // 26 ** PC 2 ** D26
+	PC	, // 27 ** PC 3 ** D27
+	PC	, // 28 ** PC 4 ** D28
+	PC	, // 29 ** PC 5 ** D29
+	PC	, // 30 ** PC 6 ** D30
+	PC	, // 31 ** PC 7 ** D31
+	PE	, // 32 ** PE 2 ** D32
+	PE	, // 33 ** PE 6 ** D33
+	PE	, // 34 ** PE 7 ** D34
+	PD	, // 35 ** PD 4 ** D35
+	PD	, // 36 ** PD 5 ** D36
+	PD	, // 37 ** PD 6 ** D37
+	PD	, // 38 ** PD 7 ** D38
+	PG	, // 39 ** PG 0 ** D39
+	PG	, // 40 ** PG 1 ** D40
+	PG	, // 41 ** PG 2 ** D41
+	PG	, // 42 ** PG 3 ** D42
+	PG	, // 43 ** PG 4 ** D43
+	PB	, // 44 ** PB 0 ** D44
+	PB	, // 45 ** PB 1 ** D45
+	PB	, // 46 ** PB 2 ** D46
+	PB	, // 47 ** PB 3 ** D47
+	PF	, // 48 ** PF 0 ** A0
+	PF	, // 49 ** PF 1 ** A1
+	PF	, // 50 ** PF 2 ** A2
+	PF	, // 51 ** PF 3 ** A3
+	PF	, // 52 ** PF 4 ** A4
+	PF	, // 53 ** PF 5 ** A5
+	PF	, // 54 ** PF 6 ** A6
+	PF	, // 55 ** PF 7 ** A7
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	// PIN IN PORT		
 	// -------------------------------------------		
-	_BV( 0 )	, // PE 0 ** 0 ** USART0_RX	
-	_BV( 1 )	, // PE 1 ** 1 ** USART0_TX	
-	_BV( 4 )	, // PE 4 ** 2 ** PWM2	
-	_BV( 5 )	, // PE 5 ** 3 ** PWM3	
-	_BV( 5 )	, // PG 5 ** 4 ** PWM4	
-	_BV( 3 )	, // PE 3 ** 5 ** PWM5	
-	_BV( 3 )	, // PH 3 ** 6 ** PWM6	
-	_BV( 4 )	, // PH 4 ** 7 ** PWM7	
-	_BV( 5 )	, // PH 5 ** 8 ** PWM8	
-	_BV( 6 )	, // PH 6 ** 9 ** PWM9	
-	_BV( 4 )	, // PB 4 ** 10 ** PWM10	
-	_BV( 5 )	, // PB 5 ** 11 ** PWM11	
-	_BV( 6 )	, // PB 6 ** 12 ** PWM12	
-	_BV( 7 )	, // PB 7 ** 13 ** PWM13	
-	_BV( 1 )	, // PJ 1 ** 14 ** USART3_TX	
-	_BV( 0 )	, // PJ 0 ** 15 ** USART3_RX	
-	_BV( 1 )	, // PH 1 ** 16 ** USART2_TX	
-	_BV( 0 )	, // PH 0 ** 17 ** USART2_RX	
-	_BV( 3 )	, // PD 3 ** 18 ** USART1_TX	
-	_BV( 2 )	, // PD 2 ** 19 ** USART1_RX	
-	_BV( 1 )	, // PD 1 ** 20 ** I2C_SDA	
-	_BV( 0 )	, // PD 0 ** 21 ** I2C_SCL	
-	_BV( 0 )	, // PA 0 ** 22 ** D22	
-	_BV( 1 )	, // PA 1 ** 23 ** D23	
-	_BV( 2 )	, // PA 2 ** 24 ** D24	
-	_BV( 3 )	, // PA 3 ** 25 ** D25	
-	_BV( 4 )	, // PA 4 ** 26 ** D26	
-	_BV( 5 )	, // PA 5 ** 27 ** D27	
-	_BV( 6 )	, // PA 6 ** 28 ** D28	
-	_BV( 7 )	, // PA 7 ** 29 ** D29	
-	_BV( 7 )	, // PC 7 ** 30 ** D30	
-	_BV( 6 )	, // PC 6 ** 31 ** D31	
-	_BV( 5 )	, // PC 5 ** 32 ** D32	
-	_BV( 4 )	, // PC 4 ** 33 ** D33	
-	_BV( 3 )	, // PC 3 ** 34 ** D34	
-	_BV( 2 )	, // PC 2 ** 35 ** D35	
-	_BV( 1 )	, // PC 1 ** 36 ** D36	
-	_BV( 0 )	, // PC 0 ** 37 ** D37	
-	_BV( 7 )	, // PD 7 ** 38 ** D38	
-	_BV( 2 )	, // PG 2 ** 39 ** D39	
-	_BV( 1 )	, // PG 1 ** 40 ** D40	
-	_BV( 0 )	, // PG 0 ** 41 ** D41	
-	_BV( 7 )	, // PL 7 ** 42 ** D42	
-	_BV( 6 )	, // PL 6 ** 43 ** D43	
-	_BV( 5 )	, // PL 5 ** 44 ** D44	
-	_BV( 4 )	, // PL 4 ** 45 ** D45	
-	_BV( 3 )	, // PL 3 ** 46 ** D46	
-	_BV( 2 )	, // PL 2 ** 47 ** D47	
-	_BV( 1 )	, // PL 1 ** 48 ** D48	
-	_BV( 0 )	, // PL 0 ** 49 ** D49	
-	_BV( 3 )	, // PB 3 ** 50 ** SPI_MISO	
-	_BV( 2 )	, // PB 2 ** 51 ** SPI_MOSI	
-	_BV( 1 )	, // PB 1 ** 52 ** SPI_SCK	
-	_BV( 0 )	, // PB 0 ** 53 ** SPI_SS	
-	_BV( 0 )	, // PF 0 ** 54 ** A0	
-	_BV( 1 )	, // PF 1 ** 55 ** A1	
-	_BV( 2 )	, // PF 2 ** 56 ** A2	
-	_BV( 3 )	, // PF 3 ** 57 ** A3	
-	_BV( 4 )	, // PF 4 ** 58 ** A4	
-	_BV( 5 )	, // PF 5 ** 59 ** A5	
-	_BV( 6 )	, // PF 6 ** 60 ** A6	
-	_BV( 7 )	, // PF 7 ** 61 ** A7	
-	_BV( 0 )	, // PK 0 ** 62 ** A8	
-	_BV( 1 )	, // PK 1 ** 63 ** A9	
-	_BV( 2 )	, // PK 2 ** 64 ** A10	
-	_BV( 3 )	, // PK 3 ** 65 ** A11	
-	_BV( 4 )	, // PK 4 ** 66 ** A12	
-	_BV( 5 )	, // PK 5 ** 67 ** A13	
-	_BV( 6 )	, // PK 6 ** 68 ** A14	
-	_BV( 7 )	, // PK 7 ** 69 ** A15	
+	_BV(0)	, //  0 ** PE 0 ** USART0_RX
+	_BV(1)	, //  1 ** PE 1 ** USART0_TX
+	_BV(2)	, //  2 ** PD 2 ** USART1_RX
+	_BV(3)	, //  3 ** PD 3 ** USART1_TX
+	_BV(1)	, //  4 ** PD 1 ** TWI_SDA
+	_BV(0)	, //  5 ** PD 0 ** TWI_SCL
+	_BV(0)	, //  6 ** PD 0 ** DUPLICATE - RESERVED FOR LATER USE
+	_BV(1)	, //  7 ** PD 1 ** DUPLICATE - RESERVED FOR LATER USE
+	_BV(4)	, //  8 ** PE 4 ** PWM4
+	_BV(5)	, //  9 ** PE 5 ** PWM5
+	_BV(5)	, // 10 ** PG 5 ** PWM6
+	_BV(3)	, // 11 ** PE 3 ** PWM7
+	_BV(4)	, // 12 ** PB 4 ** PWM8
+	_BV(5)	, // 13 ** PB 5 ** PWM9
+	_BV(6)	, // 14 ** PB 6 ** PWM10
+	_BV(7)	, // 15 ** PB 7 ** PWM11
+	_BV(0)	, // 16 ** PA 0 ** D16
+	_BV(1)	, // 17 ** PA 1 ** D17
+	_BV(2)	, // 18 ** PA 2 ** D18
+	_BV(3)	, // 19 ** PA 3 ** D19
+	_BV(4)	, // 20 ** PA 4 ** D20
+	_BV(5)	, // 21 ** PA 5 ** D21
+	_BV(6)	, // 22 ** PA 6 ** D22
+	_BV(7)	, // 23 ** PA 7 ** D23
+	_BV(0)	, // 24 ** PC 0 ** D24
+	_BV(1)	, // 25 ** PC 1 ** D25
+	_BV(2)	, // 26 ** PC 2 ** D26
+	_BV(3)	, // 27 ** PC 3 ** D27
+	_BV(4)	, // 28 ** PC 4 ** D28
+	_BV(5)	, // 29 ** PC 5 ** D29
+	_BV(6)	, // 30 ** PC 6 ** D30
+	_BV(7)	, // 31 ** PC 7 ** D31
+	_BV(2)	, // 32 ** PE 2 ** D32
+	_BV(6)	, // 33 ** PE 6 ** D33
+	_BV(7)	, // 34 ** PE 7 ** D34
+	_BV(4)	, // 35 ** PD 4 ** D35
+	_BV(5)	, // 36 ** PD 5 ** D36
+	_BV(6)	, // 37 ** PD 6 ** D37
+	_BV(7)	, // 38 ** PD 7 ** D38
+	_BV(0)	, // 39 ** PG 0 ** D39
+	_BV(1)	, // 40 ** PG 1 ** D40
+	_BV(2)	, // 41 ** PG 2 ** D41
+	_BV(3)	, // 42 ** PG 3 ** D42
+	_BV(4)	, // 43 ** PG 4 ** D43
+	_BV(0)	, // 44 ** PB 0 ** D44
+	_BV(1)	, // 45 ** PB 1 ** D45
+	_BV(2)	, // 46 ** PB 2 ** D46
+	_BV(3)	, // 47 ** PB 3 ** D47
+	_BV(0)	, // 48 ** PF 0 ** A0
+	_BV(1)	, // 49 ** PF 1 ** A1
+	_BV(2)	, // 50 ** PF 2 ** A2
+	_BV(3)	, // 51 ** PF 3 ** A3
+	_BV(4)	, // 52 ** PF 4 ** A4
+	_BV(5)	, // 53 ** PF 5 ** A5
+	_BV(6)	, // 54 ** PF 6 ** A6
+	_BV(7)	, // 55 ** PF 7 ** A7
 };
 
 const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	// TIMERS		
 	// -------------------------------------------		
-	NOT_ON_TIMER	, // PE 0 ** 0 ** USART0_RX	
-	NOT_ON_TIMER	, // PE 1 ** 1 ** USART0_TX	
-	TIMER3B	, // PE 4 ** 2 ** PWM2	
-	TIMER3C	, // PE 5 ** 3 ** PWM3	
-	TIMER0B	, // PG 5 ** 4 ** PWM4	
-	TIMER3A	, // PE 3 ** 5 ** PWM5	
-	TIMER4A	, // PH 3 ** 6 ** PWM6	
-	TIMER4B	, // PH 4 ** 7 ** PWM7	
-	TIMER4C	, // PH 5 ** 8 ** PWM8	
-	TIMER2B	, // PH 6 ** 9 ** PWM9	
-	TIMER2A	, // PB 4 ** 10 ** PWM10	
-	TIMER1A	, // PB 5 ** 11 ** PWM11	
-	TIMER1B	, // PB 6 ** 12 ** PWM12	
-	TIMER0A	, // PB 7 ** 13 ** PWM13	
-	NOT_ON_TIMER	, // PJ 1 ** 14 ** USART3_TX	
-	NOT_ON_TIMER	, // PJ 0 ** 15 ** USART3_RX	
-	NOT_ON_TIMER	, // PH 1 ** 16 ** USART2_TX	
-	NOT_ON_TIMER	, // PH 0 ** 17 ** USART2_RX	
-	NOT_ON_TIMER	, // PD 3 ** 18 ** USART1_TX	
-	NOT_ON_TIMER	, // PD 2 ** 19 ** USART1_RX	
-	NOT_ON_TIMER	, // PD 1 ** 20 ** I2C_SDA	
-	NOT_ON_TIMER	, // PD 0 ** 21 ** I2C_SCL	
-	NOT_ON_TIMER	, // PA 0 ** 22 ** D22	
-	NOT_ON_TIMER	, // PA 1 ** 23 ** D23	
-	NOT_ON_TIMER	, // PA 2 ** 24 ** D24	
-	NOT_ON_TIMER	, // PA 3 ** 25 ** D25	
-	NOT_ON_TIMER	, // PA 4 ** 26 ** D26	
-	NOT_ON_TIMER	, // PA 5 ** 27 ** D27	
-	NOT_ON_TIMER	, // PA 6 ** 28 ** D28	
-	NOT_ON_TIMER	, // PA 7 ** 29 ** D29	
-	NOT_ON_TIMER	, // PC 7 ** 30 ** D30	
-	NOT_ON_TIMER	, // PC 6 ** 31 ** D31	
-	NOT_ON_TIMER	, // PC 5 ** 32 ** D32	
-	NOT_ON_TIMER	, // PC 4 ** 33 ** D33	
-	NOT_ON_TIMER	, // PC 3 ** 34 ** D34	
-	NOT_ON_TIMER	, // PC 2 ** 35 ** D35	
-	NOT_ON_TIMER	, // PC 1 ** 36 ** D36	
-	NOT_ON_TIMER	, // PC 0 ** 37 ** D37	
-	NOT_ON_TIMER	, // PD 7 ** 38 ** D38	
-	NOT_ON_TIMER	, // PG 2 ** 39 ** D39	
-	NOT_ON_TIMER	, // PG 1 ** 40 ** D40	
-	NOT_ON_TIMER	, // PG 0 ** 41 ** D41	
-	NOT_ON_TIMER	, // PL 7 ** 42 ** D42	
-	NOT_ON_TIMER	, // PL 6 ** 43 ** D43	
-	TIMER5C	, // PL 5 ** 44 ** D44	
-	TIMER5B	, // PL 4 ** 45 ** D45	
-	TIMER5A	, // PL 3 ** 46 ** D46	
-	NOT_ON_TIMER	, // PL 2 ** 47 ** D47	
-	NOT_ON_TIMER	, // PL 1 ** 48 ** D48	
-	NOT_ON_TIMER	, // PL 0 ** 49 ** D49	
-	NOT_ON_TIMER	, // PB 3 ** 50 ** SPI_MISO	
-	NOT_ON_TIMER	, // PB 2 ** 51 ** SPI_MOSI	
-	NOT_ON_TIMER	, // PB 1 ** 52 ** SPI_SCK	
-	NOT_ON_TIMER	, // PB 0 ** 53 ** SPI_SS	
-	NOT_ON_TIMER	, // PF 0 ** 54 ** A0	
-	NOT_ON_TIMER	, // PF 1 ** 55 ** A1	
-	NOT_ON_TIMER	, // PF 2 ** 56 ** A2	
-	NOT_ON_TIMER	, // PF 3 ** 57 ** A3	
-	NOT_ON_TIMER	, // PF 4 ** 58 ** A4	
-	NOT_ON_TIMER	, // PF 5 ** 59 ** A5	
-	NOT_ON_TIMER	, // PF 6 ** 60 ** A6	
-	NOT_ON_TIMER	, // PF 7 ** 61 ** A7	
-	NOT_ON_TIMER	, // PK 0 ** 62 ** A8	
-	NOT_ON_TIMER	, // PK 1 ** 63 ** A9	
-	NOT_ON_TIMER	, // PK 2 ** 64 ** A10	
-	NOT_ON_TIMER	, // PK 3 ** 65 ** A11	
-	NOT_ON_TIMER	, // PK 4 ** 66 ** A12	
-	NOT_ON_TIMER	, // PK 5 ** 67 ** A13	
-	NOT_ON_TIMER	, // PK 6 ** 68 ** A14	
-	NOT_ON_TIMER	, // PK 7 ** 69 ** A15	
+		NOT_ON_TIMER	, //  0 ** PE 0 ** USART0_RX
+		NOT_ON_TIMER	, //  1 ** PE 1 ** USART0_TX
+		NOT_ON_TIMER	, //  2 ** PD 2 ** USART1_RX
+		NOT_ON_TIMER	, //  3 ** PD 3 ** USART1_TX
+		NOT_ON_TIMER	, //  4 ** PD 1 ** TWI_SDA
+		NOT_ON_TIMER	, //  5 ** PD 0 ** TWI_SCL
+		NOT_ON_TIMER	, //  6 ** PD 0 ** DUPLICATE - RESERVED FOR LATER USE
+		NOT_ON_TIMER	, //  7 ** PD 1 ** DUPLICATE - RESERVED FOR LATER USE
+		TIMER3B			, //  8 ** PE 4 ** PWM4, TIMER3B
+		TIMER3C			, //  9 ** PE 5 ** PWM5, TIMER3C
+		TIMER0B			, // 10 ** PG 5 ** PWM6, TIMER0B
+		TIMER3A			, // 11 ** PE 3 ** PWM7, TIMER3A
+		TIMER2A			, // 12 ** PB 4 ** PWM8, TIMER2A
+		TIMER1A			, // 13 ** PB 5 ** PWM9, TIMER1A
+		TIMER1B			, // 14 ** PB 6 ** PWM10, TIMER1B
+		TIMER0A			, // 15 ** PB 7 ** PWM11, TIMER0A
+		NOT_ON_TIMER	, // 16 ** PA 0 ** D16
+		NOT_ON_TIMER	, // 17 ** PA 1 ** D17
+		NOT_ON_TIMER	, // 18 ** PA 2 ** D18
+		NOT_ON_TIMER	, // 19 ** PA 3 ** D19
+		NOT_ON_TIMER	, // 20 ** PA 4 ** D20
+		NOT_ON_TIMER	, // 21 ** PA 5 ** D21
+		NOT_ON_TIMER	, // 22 ** PA 6 ** D22
+		NOT_ON_TIMER	, // 23 ** PA 7 ** D23
+		NOT_ON_TIMER	, // 24 ** PC 0 ** D24
+		NOT_ON_TIMER	, // 25 ** PC 1 ** D25
+		NOT_ON_TIMER	, // 26 ** PC 2 ** D26
+		NOT_ON_TIMER	, // 27 ** PC 3 ** D27
+		NOT_ON_TIMER	, // 28 ** PC 4 ** D28
+		NOT_ON_TIMER	, // 29 ** PC 5 ** D29
+		NOT_ON_TIMER	, // 30 ** PC 6 ** D30
+		NOT_ON_TIMER	, // 31 ** PC 7 ** D31
+		NOT_ON_TIMER	, // 32 ** PE 2 ** D32
+		NOT_ON_TIMER	, // 33 ** PE 6 ** D33
+		NOT_ON_TIMER	, // 34 ** PE 7 ** D34
+		NOT_ON_TIMER	, // 35 ** PD 4 ** D35
+		NOT_ON_TIMER	, // 36 ** PD 5 ** D36
+		NOT_ON_TIMER	, // 37 ** PD 6 ** D37
+		NOT_ON_TIMER	, // 38 ** PD 7 ** D38
+		NOT_ON_TIMER	, // 39 ** PG 0 ** D39
+		NOT_ON_TIMER	, // 40 ** PG 1 ** D40
+		NOT_ON_TIMER	, // 41 ** PG 2 ** D41
+		NOT_ON_TIMER	, // 42 ** PG 3 ** D42
+		NOT_ON_TIMER	, // 43 ** PG 4 ** D43
+		NOT_ON_TIMER	, // 44 ** PB 0 ** D44
+		NOT_ON_TIMER	, // 45 ** PB 1 ** D45
+		NOT_ON_TIMER	, // 46 ** PB 2 ** D46
+		NOT_ON_TIMER	, // 47 ** PB 3 ** D47
+		NOT_ON_TIMER	, // 48 ** PF 0 ** A0
+		NOT_ON_TIMER	, // 49 ** PF 1 ** A1
+		NOT_ON_TIMER	, // 50 ** PF 2 ** A2
+		NOT_ON_TIMER	, // 51 ** PF 3 ** A3
+		NOT_ON_TIMER	, // 52 ** PF 4 ** A4
+		NOT_ON_TIMER	, // 53 ** PF 5 ** A5
+		NOT_ON_TIMER	, // 54 ** PF 6 ** A6
+		NOT_ON_TIMER	, // 55 ** PF 7 ** A7
 };
 #else
 // these arrays map port names (e.g. port B) to the
