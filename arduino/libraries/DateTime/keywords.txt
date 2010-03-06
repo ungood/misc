@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map For DateTime
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+getYear	KEYWORD2
+getMonth	KEYWORD2
+getDate	KEYWORD2
+getDay	KEYWORD2
+getHour	KEYWORD2
+getMinute	KEYWORD2
+getSecond	KEYWORD2
+set	KEYWORD2
+setBcd	KEYWORD2
+
+#######################################
+# Instances (KEYWORD1)
+#######################################
+
+DateTime	KEYWORD1
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
