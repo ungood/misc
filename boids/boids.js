@@ -49,48 +49,73 @@ vector.create = function(direction, magnitude) {
 
 function BoidController(surface, options) {
 	var defaults = {
-		frameRate: 25,
+		frameRate: 50,
+		background: "#eee",
+		debug: true,
+		clipToFrame: true,
 		numBoids: 30,
 		trailLength: 10,
-		minSpeed: 3,
-		maxSpeed: 5,
-		visionRadius: 50,
-		background: "#eee"
+		visionRadius: 50,		
 	};
-	var settings = dojo.extend(defaults, options);
-	var dimensions = surface.getDimensions();
-	var center = new vector(dimensions.width / 2, dimensions.height / 2);
+	var settings = defaults;
+		
 	var boids = [];
-
-	for(var i = 0; i < settings.numBoids; i++) {
-		boids.push(Boid.createRandom(i, dimensions, settings));
-		console.log(boids[i]);
-	}
-
+	var intervalHandle = null;
+	
 	function draw() {
 		surface.clear();
-		var bgColor = new dojo.Color(settings.background);
-		surface.createRect({
-			x: 0, y: 0,
-			width: dimensions.width,
-			height: dimensions.height
-		}).setStroke("black").setFill(bgColor);
+		
+		surface
+			.createRect({
+				x: 0, y: 0,
+				width: settings.dimensions.width,
+				height: settings.dimensions.height})
+			.setStroke("black")
+			.setFill(settings.bgColor);
 
 		for(i in boids) {
-			boids[i].findNeighbors(surface, boids, settings);
-			boids[i].draw(surface, bgColor);
+			boids[i].draw(surface, settings.bgColor);
+			if(settings.debug)
+				boids[i].drawNeighbors(surface);
 		}
 	}
 
 	function update() {
-		for(i in boids) {
-			var accel = center.sub(boids[i].position).scalar(.005);
+		for(var i in boids) {
+			boids[i].updateNeighbors(boids);
+			
+			
+			var accel = settings.center.sub(boids[i].position).scalar(.005);
 			var rand = vector.create(Math.random() * Math.PI * 2, 1 - Math.random() * 2);
 			boids[i].update(accel.add(accel).add(rand));
 		}
 	}
 
-	setInterval(function() { update(); draw(); }, 1000 / settings.frameRate);
+	this.updateSettings = function(newSettings) {
+		settings = dojo.extend(settings, newSettings);
+		settings.visionRadius2 = settings.visionRadius * settings.visionRadius;
+		settings.interval = 1000 / settings.frameRate;
+		settings.dimensions = surface.getDimensions();
+		settings.center = new vector(
+			settings.dimensions.width / 2,
+			settings.dimensions.height / 2);
+			
+		settings.bgColor = new dojo.Color(settings.background);
+		this.restart();
+	}
+		
+	this.restart = function() {
+		boids = [];
+		for(var i = 0; i < settings.numBoids; i++) {
+			boids.push(Boid.createRandom(i, settings));
+		}
+		
+		if(intervalHandle)
+			clearInterval(intervalHandler);
+		intervalHandle = setInterval(function() { update(); draw(); }, settings.interval);
+	}
+	
+	this.updateSettings(options);
 }
 
 function Boid(position, velocity, color, settings) {
@@ -98,11 +123,32 @@ function Boid(position, velocity, color, settings) {
 	this.velocity = velocity;
 	this.color = color;
 	this.trail = [];
+	this.settings = settings;
+	
+	this.updateNeighbors = function(boids) {
+		this.neighbors = [];
+		
+		for(var i in boids) {
+			if(boids[i] == this) continue;
+			
+			var dp = boids[i].position.sub(this.position);
+
+			// is boid in sight range?
+			var distance2 = dp.mag2();
+			if(distance2 > this.settings.visionRadius2) continue;
+
+			this.neighbors.push(boids[i]);
+		}
+	}
 
 	this.update = function(accel) {
 		this.velocity = this.velocity.add(accel);
 		this.position = this.position.add(this.velocity);
-
+		
+		// if(settings.clipToFrame) {
+		// 	this.position
+		// }
+		
 		this.trail.unshift(this.position);
 		while(this.trail.length > settings.trailLength)
 			this.trail.pop();
@@ -126,37 +172,24 @@ function Boid(position, velocity, color, settings) {
 			}).setStroke(blend);
 		}
 	}
-
-	this.findNeighbors = function(surface, boids, settings) {
-		var neighbors = [];
-		var vision2 = settings.visionRadius * settings.visionRadius;
-
-		for(var i in boids) {
-			if(boids[i] == this) continue;
-
-			var dp = boids[i].position.sub(this.position);
-
-			// is boid in sight range?
-			var distance2 = dp.mag2();
-			if(distance2 > vision2) continue;
-
-			//var angle = this.velocity.cosAngle(dp);
+	
+	this.drawNeighbors = function(surface) {
+		for(var i in this.neighbors) {
 			surface.createLine({
 				x1: this.position.x,
 				y1: this.position.y,
-				x2: boids[i].position.x,
-				y2: boids[i].position.y}).setStroke("black");
+				x2: this.neighbors[i].position.x,
+				y2: this.neighbors[i].position.y}).setStroke("black");
 		}
 	}
 }
 
-Boid.createRandom = function(i, dimensions, settings) {
+Boid.createRandom = function(i, settings) {
 	var position = new vector(
-		Math.random() * dimensions.width,
-		Math.random() * dimensions.height);
-	var velocity = vector.create(
-		Math.random() * Math.PI * 2,
-		settings.minSpeed + Math.random(settings.maxSpeed - settings.minSpeed));
+		Math.random() * settings.dimensions.width,
+		Math.random() * settings.dimensions.height);
+		
+	var velocity = new vector(0, 0);
 	var color = dojox.color.fromHsl(
 		(360 / settings.numBoids) * i,
 		100,
