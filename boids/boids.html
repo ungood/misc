@@ -3,6 +3,7 @@
 		<title>Boids!</title>
   </head>
   <body class="tundra">
+  <div style="width: 100px; height: 100px;"></div>
     <div id="surface"></div>	
       
     <script type="text/javascript"
@@ -13,7 +14,7 @@
     <script type="text/javascript">
       dojo.addOnLoad(function() {
           var node = dojo.byId("surface");
-          var surface = dojox.gfx.createSurface(node, 600, 600);
+          var surface = dojox.gfx.createSurface(node, dojo.coords(node).w, 600);
           var bc = new BoidController(surface, {
             color: false
           });

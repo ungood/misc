@@ -91,15 +91,15 @@ function BoidController(surface, options) {
 	var moveTarget = false;
 	dojo.connect(surface.node, "onmousemove", function(e) {
 		if(moveTarget)
-			target = new vector(e.layerX, e.layerY);
+			target = new vector(e.offsetX, e.offsetY);
 	});
 	dojo.connect(surface.node, "onmousedown", function(e) {
 		moveTarget = true;
 	});
 	dojo.connect(surface.node, "onmouseup", function() {
 		moveTarget = false;
-	});
 
+	});
 	
 	function draw() {
 		surface.clear();
@@ -122,8 +122,8 @@ function BoidController(surface, options) {
 				r: Math.min(settings.dimensions.width, settings.dimensions.height) / 25
 			})
 			.setStroke({color: "black", width: width})
-			.setFill(cfill)
-
+			.setFill(cfill);
+		
 		for(i in boids) {
 			boids[i].draw(surface, settings.bgColor);
 			if(settings.debug)
