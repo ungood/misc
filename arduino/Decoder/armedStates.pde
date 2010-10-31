@@ -12,6 +12,10 @@ void armingUpdate() {
   
   if(decrementTimer()) {
     if(timer <= 0) {
+      resetTimer(getGameLength());
+      lcd.printArmed();
+      beep(5);
+      
       stateMachine.transitionTo(ArmedState);
       return;
     }
@@ -21,14 +25,8 @@ void armingUpdate() {
   }
 }
 
-void armingExit() {
-  setArmedStatus(Armed);
-  resetTimer(getGameLength());
-  lcd.printArmed();
-  beep(5);
-}
-
 void armedEnter() {
+  setArmedStatus(Armed);
   lcd.printArmed();
 }
 

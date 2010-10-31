@@ -13,7 +13,7 @@ const int numBuzzers = 3;
 int buzzerPins[] = { 9, 10, 11 };
 
 const int numKeys = 3;
-int keyPins[] = { 3, 4, 5 };
+int keyPins[] = { 12, 14, 15 };
 
 const int redPin = 6;
 const int greenPin = 7;
@@ -39,7 +39,7 @@ State BootUpState(bootUp, nop, nop);
 State PermaAlarmState(permaAlarmsEnter, permaAlarmsUpdate, nop);
 State DisarmingState(disarmingEnter, disarmingUpdate, nop);
 State DisarmedState(disarmedEnter, disarmedUpdate, nop);
-State ArmingState(armingEnter, armingUpdate, armingExit);
+State ArmingState(armingEnter, armingUpdate, nop);
 State ArmedState(armedEnter, armedUpdate, nop);
 
 FSM stateMachine(InitialState);
@@ -51,9 +51,7 @@ void setup() {
   for(int i = 0; i < numBuzzers; i++)
     pinMode(buzzerPins[i], OUTPUT);
     
-  for(int i = 0; i < numKeys; i++) {
-    digitalWrite(keyPins[i], HIGH); // turn on internal pullup
-  }
+  keysMode(OUTPUT);
   
   digitalWrite(redPin, HIGH);  // internal pullups
   digitalWrite(greenPin, HIGH); 
@@ -69,12 +67,25 @@ void loop() {
   stateMachine.update();
 }
 
-boolean areKeysIn() {
+void keysMode(int mode) {
   for(int i = 0; i < numKeys; i++) {
-    if(digitalRead(keyPins[i]) == HIGH) // Keys are on pullup resistor.
-      return false;
+    pinMode(keyPins[i], mode);
+    digitalWrite(keyPins[i], HIGH);
   }
+}
+
+boolean areKeysIn() {
+  keysMode(INPUT);
   
+  int keysIn = 0;
+  for(int i = 0; i < numKeys; i++) {
+    if(digitalRead(keyPins[i]) == HIGH) {
+      keysMode(OUTPUT);   
+      return false;
+    }
+  }
+
+  keysMode(OUTPUT);  
   return true;
 }
 
