@@ -1,22 +1,23 @@
 <html>
 	<head>
 		<title>Boids!</title>
-
-		<script type="text/javascript"
-    		djConfig="gfxRenderer:'canvas'"
-    		src="http://o.aolcdn.com/dojo/1.2/dojo/dojo.xd.js">
-		</script>
-		<script type="text/javascript" src="boids.js"></script>
-		<script type="text/javascript">
-          dojo.require("dojox.gfx");
-          dojo.addOnLoad(function() {
-              var node = dojo.byId("surface");
-              var surface = dojox.gfx.createSurface(node, 600, 600);
-              var bc = new BoidController(surface);
+  </head>
+  <body class="tundra">
+    <div id="surface"></div>	
+      
+    <script type="text/javascript"
+        djConfig="gfxRenderer:'canvas'"
+        src="http://o.aolcdn.com/dojo/1.2/dojo/dojo.xd.js">
+    </script>
+    <script type="text/javascript" src="boids.js"></script>
+    <script type="text/javascript">
+      dojo.addOnLoad(function() {
+          var node = dojo.byId("surface");
+          var surface = dojox.gfx.createSurface(node, 600, 600);
+          var bc = new BoidController(surface, {
+            color: false
           });
-      </script>
+      });
+    </script>
+  </body>
 </html>
-
-<body>
-	<div id="surface" />	
-</body>
