@@ -68,7 +68,7 @@ function BoidController(surface, options) {
 		clipToFrame: true,
 		numBoids: 30,
 		trailLength: 10,
-		visionRadius: 50,
+		visionRadius: 75,
 		color: true,
 		
 		minSpeed: 3,
@@ -98,7 +98,18 @@ function BoidController(surface, options) {
 	});
 	dojo.connect(surface.node, "onmouseup", function() {
 		moveTarget = false;
-
+	});
+	dojo.connect(surface.node, "onkeypress", function(e) {
+		switch(e.which) {
+			case 100:
+			case 68:
+				settings.debug = !settings.debug;
+				break;
+			case 99:
+			case 67:
+				settings.color = !settings.color;
+				break;
+		}
 	});
 	
 	function draw() {
@@ -276,15 +287,16 @@ function Boid(position, velocity, color, settings) {
 	}
 
 	this.draw = function(surface, background) {
+		var c = this.settings.color ? this.color : new dojo.Color("black");
 		surface.createCircle({
 			cx: this.position.x,
 			cy: this.position.y,
 			r: 2
-		}).setFill(this.color);
+		}).setFill(c);
 		
 		for(var i = 1; i < this.trail.length; i++) {
 			var ratio = i / this.trail.length;
-			var blend = dojo.blendColors(this.color, background, ratio);
+			var blend = dojo.blendColors(c, background, ratio);
 			surface.createLine({
 				x1: this.trail[i-1].x,
 				y1: this.trail[i-1].y,
@@ -323,12 +335,10 @@ Boid.createRandom = function(i, settings) {
 		Math.random() * Math.PI * 2,
 		settings.minSpeed);
 	color = new dojo.Color("black");
-	if(settings.color) {
-		color = dojox.color.fromHsl(
-			(360 / settings.numBoids) * i,
-			100,
-			50);
-	}
+	color = dojox.color.fromHsl(
+		(360 / settings.numBoids) * i,
+		100,
+		50);
 
 	return new Boid(position, velocity, color, settings);
 }
