@@ -2,7 +2,7 @@
 ( Copyright 2005 by John Johnson. See readme.txt for licensing terms. )
 
 ( This file generated from the board R:/projects/svn/eagle/nix2/nix2-driver.brd )
-( This file generated 1/10/2011 9:53:21 PM )
+( This file generated 1/11/2011 6:41:42 AM )
 
 ( T01 0.027559 )
 ( T02 0.032000 )
